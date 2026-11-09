@@ -1,0 +1,2378 @@
+<!DOCTYPE html><html lang="id" data-theme="dark"><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stevanus Gabriel — Front-End / Calon Full Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================
+       CSS VARIABLES & RESET
+       ========================================================== */
+    :root {
+      /* Dark Theme (Default) */
+      --bg-main: #0B1220;
+      --bg-surface: #111B2E;
+      --bg-surface-elevated: #16233B;
+      --bg-card-subtle: rgba(17, 27, 46, 0.7);
+      --border-color: #1F2C44;
+      --border-color-glow: rgba(45, 212, 191, 0.3);
+      --text-main: #E8EEF7;
+      --text-muted: #93A1B5;
+      --text-subtle: #64748B;
+      
+      --accent-teal: #14B8A6;
+      --accent-teal-light: #2DD4BF;
+      --accent-teal-glow: rgba(45, 212, 191, 0.15);
+      --accent-gradient: linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #38BDF8 100%);
+      
+      --nav-bg: rgba(11, 18, 32, 0.85);
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --card-hover-shadow: 0 20px 40px -15px rgba(20, 184, 166, 0.25);
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-card: 20px;
+      --radius-pill: 999px;
+      
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-main: #F6F8FB;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #F0F4F9;
+      --bg-card-subtle: rgba(255, 255, 255, 0.85);
+      --border-color: #E2E8F0;
+      --border-color-glow: rgba(20, 184, 166, 0.4);
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --text-subtle: #94A3B8;
+      
+      --accent-teal: #0D9488;
+      --accent-teal-light: #14B8A6;
+      --accent-teal-glow: rgba(20, 184, 166, 0.12);
+      --accent-gradient: linear-gradient(135deg, #0D9488 0%, #14B8A6 60%, #0284C7 100%);
+      
+      --nav-bg: rgba(246, 248, 251, 0.85);
+      --card-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+      --card-hover-shadow: 0 20px 35px -12px rgba(13, 148, 136, 0.18);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color var(--transition-normal), color var(--transition-normal);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient background glows */
+    .ambient-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 600px;
+      background: radial-gradient(circle at 50% 20%, rgba(20, 184, 166, 0.15), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================================
+       NAVBAR
+       ========================================================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color var(--transition-normal), border-color var(--transition-normal);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-logo .dot {
+      color: var(--accent-teal-light);
+    }
+
+    .brand-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      background: var(--accent-teal-glow);
+      color: var(--accent-teal-light);
+      border: 1px solid var(--accent-teal);
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 28px;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      position: relative;
+      transition: color var(--transition-fast);
+      padding: 6px 0;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--text-main);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--accent-teal-light);
+      transition: width var(--transition-normal);
+      border-radius: var(--radius-pill);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .theme-toggle {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-teal-light);
+      background: var(--bg-surface-elevated);
+      transform: rotate(15deg);
+    }
+
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-teal {
+      background: var(--accent-gradient);
+      color: #07131F;
+      box-shadow: 0 4px 18px rgba(20, 184, 166, 0.35);
+    }
+
+    .btn-teal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(20, 184, 166, 0.45);
+      filter: brightness(1.05);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-teal-light);
+      color: var(--accent-teal-light);
+      background: var(--accent-teal-glow);
+      transform: translateY(-2px);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ==========================================================
+       HERO SECTION
+       ========================================================== */
+    .hero {
+      padding: 100px 0 80px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-teal-glow);
+      border: 1px solid var(--border-color-glow);
+      color: var(--accent-teal-light);
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-teal-light);
+      box-shadow: 0 0 10px var(--accent-teal-light);
+      animation: pulseAnim 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 12px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-subtitle span.sep {
+      color: var(--accent-teal);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 580px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero Visual Right Side */
+    .hero-visual-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-backdrop-glow {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 184, 166, 0.28) 0%, rgba(45, 212, 191, 0.05) 60%, transparent 80%);
+      filter: blur(40px);
+      z-index: 0;
+    }
+
+    .profile-card {
+      position: relative;
+      z-index: 1;
+      width: 320px;
+      height: 340px;
+      border-radius: var(--radius-card);
+      background: linear-gradient(145deg, var(--bg-surface-elevated), var(--bg-surface));
+      border: 1px solid var(--border-color);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(45, 212, 191, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(45, 212, 191, 0.15), transparent 40%);
+      animation: rotateGlow 10s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes rotateGlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .profile-avatar-box {
+      position: relative;
+      z-index: 1;
+      width: 140px;
+      height: 140px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(56, 189, 248, 0.2));
+      border: 2px solid var(--accent-teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(20, 184, 166, 0.3);
+      overflow: hidden;
+    }
+
+    .profile-avatar-box svg {
+      width: 80px;
+      height: 80px;
+      color: var(--accent-teal-light);
+    }
+
+    .profile-meta {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .profile-meta h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-meta p {
+      font-size: 0.85rem;
+      color: var(--accent-teal-light);
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    /* Floating Badges */
+    .floating-badge {
+      position: absolute;
+      z-index: 3;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      backdrop-filter: blur(8px);
+      transition: transform var(--transition-fast), border-color var(--transition-fast);
+      cursor: default;
+    }
+
+    .floating-badge:hover {
+      border-color: var(--accent-teal-light);
+      transform: scale(1.06) !important;
+    }
+
+    .badge-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Float animations with different delays */
+    .badge-react {
+      top: -15px;
+      left: 10px;
+      animation: floatBadge1 4.5s ease-in-out infinite;
+    }
+
+    .badge-next {
+      top: 30px;
+      right: -25px;
+      animation: floatBadge2 5s ease-in-out infinite 0.8s;
+    }
+
+    .badge-js {
+      bottom: 20px;
+      left: -20px;
+      animation: floatBadge1 4.8s ease-in-out infinite 1.4s;
+    }
+
+    .badge-tailwind {
+      bottom: -15px;
+      right: 15px;
+      animation: floatBadge2 5.2s ease-in-out infinite 0.4s;
+    }
+
+    @keyframes floatBadge1 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes floatBadge2 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(12px); }
+    }
+
+    /* ==========================================================
+       SECTION COMMON STYLES
+       ========================================================== */
+    section {
+      padding: 90px 0;
+      position: relative;
+    }
+
+    .section-header {
+      margin-bottom: 50px;
+    }
+
+    .section-header.center {
+      text-align: center;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-teal-light);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.25;
+      color: var(--text-main);
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-top: 12px;
+    }
+
+    /* ==========================================================
+       TENTANG SAYA
+       ========================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .about-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-gradient);
+    }
+
+    .about-text {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .about-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .highlight-pill {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .highlight-pill svg {
+      color: var(--accent-teal-light);
+      width: 16px;
+      height: 16px;
+    }
+
+    .stats-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      transition: all var(--transition-normal);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-teal-light);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: var(--accent-teal-glow);
+      border: 1px solid var(--border-color-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-teal-light);
+      flex-shrink: 0;
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      margin-bottom: 4px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ==========================================================
+       PENGALAMAN & TIMELINE
+       ========================================================== */
+    .timeline-container {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+      padding-left: 40px;
+    }
+
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 14px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-teal), var(--border-color), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      top: 24px;
+      left: -40px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg-surface);
+      border: 2px solid var(--accent-teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(45, 212, 191, 0.4);
+      z-index: 2;
+    }
+
+    .timeline-dot::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-teal-light);
+    }
+
+    .timeline-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      box-shadow: var(--card-shadow);
+      transition: all var(--transition-normal);
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-color-glow);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .timeline-role {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .timeline-company {
+      font-size: 0.95rem;
+      color: var(--accent-teal-light);
+      font-weight: 600;
+    }
+
+    .timeline-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+
+    .timeline-list {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .timeline-list li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .timeline-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--accent-teal-light);
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .tags-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tech-tag {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      transition: all var(--transition-fast);
+    }
+
+    .tech-tag:hover {
+      border-color: var(--accent-teal);
+      color: var(--accent-teal-light);
+    }
+
+    /* ==========================================================
+       PROJECT PILIHAN
+       ========================================================== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-normal);
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-color-glow);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .project-thumbnail {
+      height: 220px;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #091322 0%, #152744 100%);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .thumb-mesh {
+      position: absolute;
+      inset: 0;
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    }
+
+    .thumb-glow {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 184, 166, 0.4), transparent 70%);
+      filter: blur(20px);
+    }
+
+    .thumb-illustration {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: var(--accent-teal-light);
+    }
+
+    .thumb-badge {
+      background: rgba(11, 18, 32, 0.85);
+      border: 1px solid var(--border-color-glow);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-main);
+      backdrop-filter: blur(6px);
+    }
+
+    .project-body {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.65;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .project-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ==========================================================
+       SKILL & KEAHLIAN
+       ========================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .skills-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .skills-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .skills-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--accent-teal-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-teal-light);
+    }
+
+    .skills-card-header h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    /* Progress bars */
+    .skill-bars-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skill-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .skill-name {
+      color: var(--text-main);
+    }
+
+    .skill-pct {
+      font-family: var(--font-mono);
+      color: var(--accent-teal-light);
+      font-size: 0.88rem;
+    }
+
+    .skill-track {
+      width: 100%;
+      height: 9px;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .skill-fill {
+      height: 100%;
+      border-radius: var(--radius-pill);
+      background: var(--accent-gradient);
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Non-technical badges */
+    .soft-skills-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .soft-skills-block h4 {
+      font-size: 0.95rem;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .soft-pills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .soft-pill {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      padding: 10px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .soft-pill:hover {
+      border-color: var(--accent-teal);
+      background: var(--accent-teal-glow);
+      transform: translateY(-2px);
+    }
+
+    .soft-pill svg {
+      color: var(--accent-teal-light);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ==========================================================
+       PENDIDIKAN
+       ========================================================== */
+    .education-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .edu-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 36px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      transition: all var(--transition-normal);
+    }
+
+    .edu-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-color-glow);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .edu-icon-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: var(--accent-teal-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-teal-light);
+      border: 1px solid var(--border-color-glow);
+    }
+
+    .edu-school {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .edu-major {
+      font-size: 1rem;
+      color: var(--accent-teal-light);
+      font-weight: 600;
+    }
+
+    .edu-location {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .edu-period {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ==========================================================
+       CTA BANNER
+       ========================================================== */
+    .cta-section {
+      padding: 60px 0;
+    }
+
+    .cta-banner {
+      background: linear-gradient(135deg, #0D9488 0%, #14B8A6 45%, #2DD4BF 100%);
+      border-radius: var(--radius-card);
+      padding: 56px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      box-shadow: 0 20px 40px rgba(20, 184, 166, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      max-width: 680px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-badge {
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.2);
+      color: #FFFFFF;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 12px;
+    }
+
+    .cta-text {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #07131F;
+      line-height: 1.35;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-dark {
+      background: #0B1220;
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 16px 36px;
+      font-size: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-dark:hover {
+      background: #111B2E;
+      color: var(--accent-teal-light);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ==========================================================
+       KONTAK
+       ========================================================== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px;
+    }
+
+    .contact-cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-info-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--card-shadow);
+      transition: all var(--transition-normal);
+    }
+
+    .contact-info-card:hover {
+      transform: translateX(6px);
+      border-color: var(--accent-teal-light);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .contact-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--accent-teal-glow);
+      border: 1px solid var(--border-color-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-teal-light);
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .contact-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Form Card */
+    .contact-form-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 40px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      transition: all var(--transition-fast);
+      outline: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--accent-teal-light);
+      box-shadow: 0 0 0 3px var(--accent-teal-glow);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    /* ==========================================================
+       FOOTER
+       ========================================================== */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      padding: 48px 0;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer-copy {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-sub {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color var(--transition-fast);
+    }
+
+    .footer-link:hover {
+      color: var(--accent-teal-light);
+    }
+
+    .back-to-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-teal-light);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-teal-glow);
+      border: 1px solid var(--border-color-glow);
+      transition: all var(--transition-fast);
+    }
+
+    .back-to-top:hover {
+      background: var(--accent-teal);
+      color: #0B1220;
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================
+       SCROLL REVEAL ANIMATIONS (CSS + JS Observer)
+       ========================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================
+       RESPONSIVE BREAKPOINTS (820px and 480px)
+       ========================================================== */
+    @media (max-width: 820px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+        text-align: center;
+      }
+
+      .hero-desc {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-subtitle {
+        justify-content: center;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .education-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 28px;
+      }
+
+      .nav-menu {
+        display: none;
+      }
+
+      .nav-menu.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border-color);
+        padding: 24px;
+        gap: 16px;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .hero-subtitle span.sep {
+        display: none;
+      }
+
+      .profile-card {
+        width: 270px;
+        height: 290px;
+      }
+
+      .profile-avatar-box {
+        width: 110px;
+        height: 110px;
+      }
+
+      .floating-badge {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+
+      .badge-react { top: -20px; left: -10px; }
+      .badge-next { top: 15px; right: -20px; }
+      .badge-js { bottom: 15px; left: -15px; }
+      .badge-tailwind { bottom: -20px; right: -10px; }
+
+      .timeline-container {
+        padding-left: 28px;
+      }
+
+      .timeline-dot {
+        left: -28px;
+        width: 24px;
+        height: 24px;
+      }
+
+      .timeline-dot::after {
+        width: 8px;
+        height: 8px;
+      }
+
+      .timeline-card {
+        padding: 20px;
+      }
+
+      .cta-text {
+        font-size: 1.25rem;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Glow -->
+  <div class="ambient-glow"></div>
+
+  <!-- ==========================================================
+       STICKY NAVBAR
+       ========================================================== -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="#beranda" class="brand-logo">
+        <span class="">stevanus<span class="dot">.</span>dev</span>
+        <span class="brand-badge">RPL</span>
+      </a>
+
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li class=""><a href="#beranda" class="nav-link active">Beranda</a></li>
+          <li class=""><a href="#tentang" class="nav-link">Tentang</a></li>
+          <li class=""><a href="#pengalaman" class="nav-link">Pengalaman</a></li>
+          <li class=""><a href="#project" class="nav-link">Project</a></li>
+          <li class=""><a href="#skill" class="nav-link">Skill</a></li>
+          <li class=""><a href="#pendidikan" class="nav-link">Pendidikan</a></li>
+          <li class=""><a href="#kontak" class="nav-link">Kontak</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Ganti Tema">
+          <!-- Sun Icon -->
+          <svg class="sun-icon" id="sunIcon" style="display: block;" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="moon-icon" id="moonIcon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <a href="#kontak" class="btn btn-teal">Hubungi Saya</a>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Buka Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================
+         1. HERO SECTION
+         ========================================================== -->
+    <section class="hero" id="beranda">
+      <div class="container hero-grid">
+        <div class="hero-content reveal active">
+          <div class="hero-label">
+            <span class="pulse-dot"></span>
+            <span class="">Halo, saya</span>
+          </div>
+          <h1 class="hero-title">Stevanus Gabriel</h1>
+          <div class="hero-subtitle">
+            <span class="">Front-End Developer</span>
+            <span class="sep">|</span>
+            <span class="">Calon Full Stack Developer</span>
+          </div>
+          <p class="hero-desc">
+            Siswa SMK Tri Ratna jurusan Rekayasa Perangkat Lunak (RPL) yang berfokus membangun website modern, responsif, dan cepat dengan React dan Next.js.
+          </p>
+          <div class="hero-buttons">
+            <a href="#project" class="btn btn-teal">
+              Lihat Portfolio
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#kontak" class="btn btn-outline">Hubungi Saya</a>
+          </div>
+        </div>
+
+        <div class="hero-visual-wrap reveal active">
+          <div class="hero-backdrop-glow"></div>
+
+          <!-- Floating Badges -->
+          <div class="floating-badge badge-react">
+            <div class="badge-icon">
+              <!-- React SVG -->
+              <svg viewBox="-11.5 -10.23174 23 20.46348" width="20" height="20">
+                <circle cx="0" cy="0" r="2.05" fill="#61dafb"></circle>
+                <g stroke="#61dafb" stroke-width="1" fill="none">
+                  <ellipse rx="11" ry="4.2"></ellipse>
+                  <ellipse rx="11" ry="4.2" transform="rotate(60)"></ellipse>
+                  <ellipse rx="11" ry="4.2" transform="rotate(120)"></ellipse>
+                </g>
+              </svg>
+            </div>
+            <span class="">React</span>
+          </div>
+
+          <div class="floating-badge badge-next">
+            <div class="badge-icon">
+              <svg viewBox="0 0 180 180" width="20" height="20" fill="currentColor">
+                <mask height="180" id="mask0" maskUnits="userSpaceOnUse" width="180" x="0" y="0" style="mask-type:alpha">
+                  <circle cx="90" cy="90" fill="black" r="90"></circle>
+                </mask>
+                <g mask="url(#mask0)">
+                  <circle cx="90" cy="90" data-theme-circle="true" fill="currentColor" r="90"></circle>
+                  <path d="M149.508 157.438L69.1478 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.147 149.508 157.438Z" fill="var(--bg-surface)"></path>
+                  <rect fill="var(--bg-surface)" height="72" width="12" x="115" y="54"></rect>
+                </g>
+              </svg>
+            </div>
+            <span class="">Next.js</span>
+          </div>
+
+          <div class="floating-badge badge-js">
+            <div class="badge-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#F7DF1E">
+                <path d="M3 3h18v18H3V3zm16.5 13.5h-2.1c-.2 1.1-1 1.7-2.1 1.7-1.4 0-2.3-.9-2.3-2.4 0-1.8 1.1-2.4 2.7-3.1 1.9-.8 3.2-1.6 3.2-3.7 0-1.9-1.5-3.3-3.7-3.3-2.1 0-3.5 1.2-3.8 3.1h2.1c.2-.9.8-1.4 1.7-1.4 1 0 1.7.6 1.7 1.6 0 1.2-.8 1.8-2.3 2.4-2.1.9-3.6 1.8-3.6 4.3 0 2.3 1.7 4.1 4.3 4.1 2.5 0 4.1-1.5 4.4-4.3zM10.8 18.2V9.3h-2.1v6.5c0 1.1-.4 1.7-1.3 1.7-.8 0-1.2-.5-1.4-1.2l-2 .6c.4 1.7 1.6 2.6 3.4 2.6 2.2 0 3.4-1.2 3.4-3.3z"></path>
+              </svg>
+            </div>
+            <span class="">JavaScript</span>
+          </div>
+
+          <div class="floating-badge badge-tailwind">
+            <div class="badge-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#38BDF8">
+                <path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"></path>
+              </svg>
+            </div>
+            <span class="">Tailwind CSS</span>
+          </div>
+
+          <!-- Profile Card -->
+          <div class="profile-card">
+            <div class="profile-avatar-box"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0oUJMSPssb-eTFmaTBsuvwEuHvoNNOe89o5-6eT8JEN4JXsnrpshtn8aTwSSuEIzKg-L8b3jAErathQmadIzrf9bnEZedOjvwCykttZ6TUvT51wpvC6MeimSps0eJtRdTZqZO65PpG2oMPLAV3vq3pStT8I253s6Xp1FNPm3gkFs3nc0Mx_myECxOd-UYjy_q3KdGFLN4hB8TRcQsr87lxSQ8VXtrhwmeQG4j5wJ62xxzrhYUHDCleg" alt="Stevanus Gabriel" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block;"></div>
+            <div class="profile-meta">
+              <h3 class="">Stevanus Gabriel</h3>
+              <p class="">@stevanus.dev • Jakarta</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         2. TENTANG SAYA
+         ========================================================== -->
+    <section id="tentang">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Profil Diri</span>
+          <h2 class="section-title">Tentang Saya</h2>
+          <p class="section-subtitle">Mengenal minat, visi, dan perjalanan saya dalam dunia software engineering.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-card reveal active">
+            <p class="about-text">
+              Saya siswa SMK Tri Ratna jurusan Rekayasa Perangkat Lunak (RPL) dengan minat besar di bidang teknologi, pemrograman, dan pengembangan perangkat lunak. Saya bercita-cita menjadi Full Stack Developer profesional yang mampu mengembangkan aplikasi web secara menyeluruh, mulai dari tampilan antarmuka hingga pengelolaan server, serta terus berkembang di ekosistem JavaScript modern seperti React, Next.js, dan Node.js.
+            </p>
+            <div class="about-highlights">
+              <span class="highlight-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Fokus Front-End Modern
+              </span>
+              <span class="highlight-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Clean &amp; Maintainable Code
+              </span>
+              <span class="highlight-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                Siap Magang / Internship
+              </span>
+            </div>
+          </div>
+
+          <div class="stats-stack">
+            <div class="stat-card reveal active">
+              <div class="stat-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Proyek Website Siap Produksi</div>
+              </div>
+            </div>
+
+            <div class="stat-card reveal active">
+              <div class="stat-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">3+</div>
+                <div class="stat-label">Teknologi Utama (React, Next.js, JS)</div>
+              </div>
+            </div>
+
+            <div class="stat-card reveal active">
+              <div class="stat-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <div class="stat-number">2024</div>
+                <div class="stat-label">Mulai Belajar di RPL SMK Tri Ratna</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         3. PENGALAMAN (TIMELINE)
+         ========================================================== -->
+    <section id="pengalaman">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Riwayat Proyek &amp; Praktik</span>
+          <h2 class="section-title">Pengalaman Kerja &amp; Praktik</h2>
+          <p class="section-subtitle">Pengalaman nyata membangun aplikasi web kolaboratif dan terstruktur.</p>
+        </div>
+
+        <div class="timeline-container">
+          <!-- Item 1 -->
+          <div class="timeline-item reveal active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-role">Website E-Commerce</h3>
+                  <div class="timeline-company">Front-End Developer</div>
+                </div>
+                <span class="timeline-date">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Februari 2025 – April 2025
+                </span>
+              </div>
+              <ul class="timeline-list">
+                <li class="">Mengembangkan antarmuka e-commerce dengan React dan JavaScript yang responsif dan cepat</li>
+                <li class="">Mengintegrasikan API produk dan sistem checkout untuk mempermudah proses transaksi</li>
+                <li class="">Menggunakan Git untuk kolaborasi dan version control dalam tim pengembangan</li>
+              </ul>
+              <div class="tags-group">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">REST API</span>
+                <span class="tech-tag">Git</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="timeline-item reveal active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <div class="timeline-header">
+                <div>
+                  <h3 class="timeline-role">Company Profile Website</h3>
+                  <div class="timeline-company">Front-End Developer</div>
+                </div>
+                <span class="timeline-date">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  Juli 2025 – September 2025
+                </span>
+              </div>
+              <ul class="timeline-list">
+                <li class="">Membangun dan mendesain website company profile menggunakan Next.js dan Tailwind CSS</li>
+                <li class="">Membangun tampilan modern dengan navigasi yang responsif</li>
+                <li class="">Melakukan deployment website ke server menggunakan Vercel</li>
+              </ul>
+              <div class="tags-group">
+                <span class="tech-tag">Next.js</span>
+                <span class="tech-tag">Tailwind CSS</span>
+                <span class="tech-tag">Vercel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         4. PROJECT PILIHAN
+         ========================================================== -->
+    <section id="project">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Karya Terkini</span>
+          <h2 class="section-title">Project Pilihan</h2>
+          <p class="section-subtitle">Beberapa hasil karya terbaik yang telah dibangun dan dapat diakses publik.</p>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Project Card 1 -->
+          <div class="project-card reveal active">
+            <div class="project-thumbnail">
+              <div class="thumb-mesh"></div>
+              <div class="thumb-glow"></div>
+              <div class="thumb-illustration">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span class="thumb-badge">E-Commerce Platform</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Website E-Commerce</h3>
+              <p class="project-desc">
+                Platform e-commerce interaktif dengan katalog produk, filter dinamis, keranjang belanja, integrasi API checkout, serta antarmuka yang dioptimalkan untuk performa tinggi di berbagai perangkat.
+              </p>
+              <div class="project-footer">
+                <div class="tags-group">
+                  <span class="tech-tag">React</span>
+                  <span class="tech-tag">JavaScript</span>
+                  <span class="tech-tag">REST API</span>
+                  <span class="tech-tag">Git</span>
+                </div>
+                <a href="https://portfolio-stevanus.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%;">
+                  Lihat Project
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Card 2 -->
+          <div class="project-card reveal active">
+            <div class="project-thumbnail">
+              <div class="thumb-mesh"></div>
+              <div class="thumb-glow"></div>
+              <div class="thumb-illustration">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span class="thumb-badge">Corporate Website</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <h3 class="project-title">Company Profile Website</h3>
+              <p class="project-desc">
+                Website profil korporat modern dengan Server-Side Rendering (SSR) menggunakan Next.js, styling responsif Tailwind CSS, animasi halus, serta implementasi Continuous Deployment via Vercel.
+              </p>
+              <div class="project-footer">
+                <div class="tags-group">
+                  <span class="tech-tag">Next.js</span>
+                  <span class="tech-tag">Tailwind CSS</span>
+                  <span class="tech-tag">Vercel</span>
+                  <span class="tech-tag">SEO Ready</span>
+                </div>
+                <a href="https://portfolio-stevanus.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="width: 100%;">
+                  Lihat Project
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         5. SKILL & KEAHLIAN
+         ========================================================== -->
+    <section id="skill">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Kompetensi</span>
+          <h2 class="section-title">Skill &amp; Keahlian</h2>
+          <p class="section-subtitle">Fondasi teknis dan non-teknis yang terus saya asah dan kembangkan.</p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Left: Kemampuan Teknis -->
+          <div class="skills-card reveal active">
+            <div class="skills-card-header">
+              <div class="skills-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <div>
+                <h3 class="">Kemampuan Teknis</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted);" class="">Tingkat kemahiran alat &amp; bahasa pemrograman</p>
+              </div>
+            </div>
+
+            <div class="skill-bars-list">
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">HTML</span>
+                  <span class="skill-pct">85%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 85%;"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">CSS</span>
+                  <span class="skill-pct">80%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 80%;"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">JavaScript</span>
+                  <span class="skill-pct">75%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">React</span>
+                  <span class="skill-pct">70%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 70%;"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">Next.js</span>
+                  <span class="skill-pct">65%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 65%;"></div>
+                </div>
+              </div>
+
+              <div class="skill-item">
+                <div class="skill-label-row">
+                  <span class="skill-name">GitHub &amp; VS Code</span>
+                  <span class="skill-pct">75%</span>
+                </div>
+                <div class="skill-track">
+                  <div class="skill-fill" style="width: 75%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Kemampuan Non-Teknis & Pendukung -->
+          <div class="skills-card reveal active">
+            <div class="skills-card-header">
+              <div class="skills-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h3 class="">Kemampuan Non-Teknis</h3>
+                <p style="font-size:0.85rem; color:var(--text-muted);" class="">Soft skill, bahasa, dan sertifikasi belajar</p>
+              </div>
+            </div>
+
+            <div class="soft-skills-block">
+              <h4 class="">Soft Skills Utama</h4>
+              <div class="soft-pills-wrap">
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Adaptabilitas
+                </span>
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Disiplin dan Bertanggung Jawab
+                </span>
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Manajemen Waktu
+                </span>
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Kepemimpinan
+                </span>
+              </div>
+            </div>
+
+            <div class="soft-skills-block">
+              <h4 class="">Bahasa</h4>
+              <div class="soft-pills-wrap">
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  Indonesia (Native)
+                </span>
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  English (Technical Working Proficiency)
+                </span>
+              </div>
+            </div>
+
+            <div class="soft-skills-block">
+              <h4 class="">Pelatihan &amp; Kursus</h4>
+              <div class="soft-pills-wrap">
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  FreeCodeCamp
+                </span>
+                <span class="soft-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  Dicoding Academy
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         6. PENDIDIKAN
+         ========================================================== -->
+    <section id="pendidikan">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Latar Belakang Akademis</span>
+          <h2 class="section-title">Pendidikan</h2>
+          <p class="section-subtitle">Riwayat pendidikan formal yang membentuk fondasi logika dan kedisiplinan saya.</p>
+        </div>
+
+        <div class="education-grid">
+          <!-- Edu 1 -->
+          <div class="edu-card reveal active">
+            <div class="edu-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            </div>
+            <div>
+              <h3 class="edu-school">SMK Tri Ratna</h3>
+              <div class="edu-major">Rekayasa Perangkat Lunak (RPL)</div>
+            </div>
+            <div class="edu-location">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Jakarta Barat, DKI Jakarta
+            </div>
+            <div class="edu-period">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Juli 2024 – Sekarang
+            </div>
+          </div>
+
+          <!-- Edu 2 -->
+          <div class="edu-card reveal active">
+            <div class="edu-icon-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </div>
+            <div>
+              <h3 class="edu-school">SMP Budi Bahasa</h3>
+              <div class="edu-major">Pendidikan Menengah Pertama</div>
+            </div>
+            <div class="edu-location">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              Jakarta Barat, DKI Jakarta
+            </div>
+            <div class="edu-period">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Juli 2021 – Mei 2024
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         7. CTA BANNER
+         ========================================================== -->
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-banner reveal active">
+          <div class="cta-content">
+            <span class="cta-badge">Peluang Kolaborasi</span>
+            <p class="cta-text">
+              Ingin berkembang di ekosistem JavaScript modern dan menciptakan solusi digital yang efisien dan inovatif.
+            </p>
+          </div>
+          <a href="#kontak" class="btn btn-dark">
+            Ayo Berkolaborasi
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         8. KONTAK
+         ========================================================== -->
+    <section id="kontak">
+      <div class="container">
+        <div class="section-header reveal active">
+          <span class="section-tag">Hubungi Saya</span>
+          <h2 class="section-title">Mari Terhubung &amp; Berdiskusi</h2>
+          <p class="section-subtitle">Terbuka untuk peluang magang, proyek kolaboratif, maupun diskusi teknologi.</p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Left: 3 Contact Info Cards -->
+          <div class="contact-cards-stack">
+            <!-- Email -->
+            <a href="mailto:tepan.gabriel@gmail.com" class="contact-info-card reveal active">
+              <div class="contact-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div>
+                <div class="contact-label">Email Langsung</div>
+                <div class="contact-value">tepan.gabriel@gmail.com</div>
+              </div>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/6285770002971" target="_blank" rel="noopener noreferrer" class="contact-info-card reveal active">
+              <div class="contact-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div>
+                <div class="contact-label">WhatsApp</div>
+                <div class="contact-value">+62 857-7000-2971</div>
+              </div>
+            </a>
+
+            <!-- Lokasi -->
+            <div class="contact-info-card reveal active">
+              <div class="contact-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div>
+                <div class="contact-label">Domisili / Lokasi</div>
+                <div class="contact-value">Jakarta Barat, DKI Jakarta</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Contact Form -->
+          <div class="contact-form-card reveal active">
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Terima kasih! Pesan Anda telah terkirim.');">
+              <div class="form-group">
+                <label class="form-label" for="formName">Nama Lengkap</label>
+                <input class="form-input" type="text" id="formName" placeholder="Masukkan nama Anda" required="">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="formEmail">Alamat Email</label>
+                <input class="form-input" type="email" id="formEmail" placeholder="nama@perusahaan.com" required="">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="formMessage">Pesan</label>
+                <textarea class="form-textarea" id="formMessage" placeholder="Tuliskan pesan atau penawaran magang / kolaborasi..." required=""></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-teal" style="width: 100%; padding: 15px;">
+                Kirim Pesan
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================
+       9. FOOTER
+       ========================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <div class="brand-logo" style="font-size: 1.1rem;">stevanus<span class="dot">.</span>dev</div>
+        <p class="footer-copy">© 2025 Stevanus Gabriel. All rights reserved.</p>
+        <span class="footer-sub">Front-End Developer | SMK Tri Ratna RPL Jakarta Barat</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="footer-link">Instagram</a>
+        <a href="#beranda" class="back-to-top">
+          Kembali ke atas ↑
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       MINIMAL VANILLA JAVASCRIPT
+       - Dark/Light Theme Toggle
+       - Scroll Reveal (IntersectionObserver)
+       - Mobile Menu Toggle
+       ========================================================== -->
+  <script>
+    // Theme Toggle Logic
+    const htmlElem = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+
+    function updateThemeIcons(theme) {
+      if (theme === 'light') {
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      } else {
+        sunIcon.style.display = 'block';
+        moonIcon.style.display = 'none';
+      }
+    }
+
+    // Set initial icon state based on default dark
+    updateThemeIcons('dark');
+
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = htmlElem.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElem.setAttribute('data-theme', newTheme);
+      updateThemeIcons(newTheme);
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+      });
+
+      // Close menu on nav link click
+      navMenu.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+        });
+      });
+    }
+
+    // Scroll Reveal with IntersectionObserver
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Active Navigation Highlight on Scroll
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.pageYOffset + 120;
+      sections.forEach(current => {
+        const sectionHeight = current.offsetHeight;
+        const sectionTop = current.offsetTop;
+        const sectionId = current.getAttribute('id');
+        const link = document.querySelector(`.nav-menu a[href*="${sectionId}"]`);
+        if (link) {
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        }
+      });
+    });
+  </script>
+
+
+
+
+</body></html>
